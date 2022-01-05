@@ -1,11 +1,11 @@
-const bcrypt = require("bcryptjs")
+const bcrypt = require("bcrypt")
 const jwt = require("jsonwebtoken")
 const User = require("../models/userModel")
 
 exports.hashPassword = async (req, res, next) => {
     try {
         req.body.actualPassword = req.body.password ///for register route where it needs to compare passwords with only one password input
-        req.body.password = bcrypt.hash(req.bpdy.password, 8)
+        req.body.password = await bcrypt.hash(req.body.password, 8)
         next()
     } catch (error) {
         console.log(error);
