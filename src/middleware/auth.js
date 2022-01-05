@@ -1,0 +1,59 @@
+const bcrypt = require("bcryptjs")
+const jwt = require("jsonwebtoken")
+const User = require("../models/userModel")
+
+exports.hashPassword = async (req, res, next) => {
+    try {
+        req.body.actualPassword = req.body.password ///for register route where it needs to compare passwords with only one password input
+        req.body.password = bcrypt.hash(req.bpdy.password, 8)
+        next()
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.registerDecrypt = async(req, res, next)=> {
+    try {
+        req.user = await User.findOne({username: req.body.username})
+        !req.user && res.status(401).json("wrong credentials")
+        if(await bcrypt.compare(req.body.actualPassword, req.user.password)){
+            next()
+        } else {
+            res.status(401).json("wrong credentials (password)")
+            throw new Error()
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+exports.decryptPassword = async (req,res, next) => {
+    try {
+        req.user = await User.findOne({username: req.body.username})
+        !req.user && res.status(401).json("wrong credientials")
+        if(await bcrypt.compare(req.body.password, req.user.password)){
+            next()
+        } else {
+            res.status(401).json("wrong credentials (password)")
+            throw new Error()
+        }
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+exports.verifyToken = async(req, res, next)=> {
+    try {
+        const token = req.header("Authorization").replace("Bearer ", "")
+    if(token) {
+        const decodedToken = jwt.verify(token, process.env.JWT_SEC)
+        req.user = await User.findById(decodedToken.id)
+        decodedToken && next()
+    }
+    } catch (error) {
+        console.log(error);
+    }
+    
+}
+
