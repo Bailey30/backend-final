@@ -2,9 +2,10 @@ const {Router} = require("express")
 const userRouter = Router()
 const { checkExistence, addUser,  login, deleteUser, getUsers} = require("../controllers/userControllers")
 const {hashPassword, decryptPassword, registerDecrypt, verifyToken } = require("../middleware/auth")
+const {createBasket} = require("../controllers/basketControllers")
 
 //REGISTER
-userRouter.post("/register", checkExistence, hashPassword, addUser, registerDecrypt, login)
+userRouter.post("/register", checkExistence, hashPassword, addUser, registerDecrypt, createBasket, login)
 // userRouter.post("/register",addUser)
 
 //LOGIN
