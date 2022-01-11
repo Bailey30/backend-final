@@ -2,15 +2,15 @@ const Product = require("../models/productModel")
 const User = require("../models/productModel")
 
 exports.createProduct = async(req,res)=> {
-    const newProduct = new Product({
-        userId: req.body.userId,
-        title: req.body.title,
-        desc: req.body.desc,
-        img: req.body.img,
-        price: req.body.price,
-        categories: req.body.categories
-    })
     try {
+        const newProduct = new Product({
+            userId: req.body.userId,
+            title: req.body.title,
+            desc: req.body.desc,
+            img: req.body.img,
+            price: req.body.price,
+            categories: req.body.categories
+        })
         const savedProduct = await newProduct.save()
         res.status(200).send(savedProduct)
     } catch (error) {

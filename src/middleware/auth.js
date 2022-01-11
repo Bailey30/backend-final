@@ -29,8 +29,8 @@ exports.registerDecrypt = async(req, res, next)=> {
 
 exports.decryptPassword = async (req,res, next) => {
     try {
-        req.user = await User.findOne({username: req.body.username})
-        !req.user && res.status(401).json("wrong credientials")
+        req.user = await User.findOne({email: req.body.email})
+        !req.user && res.status(401).json("wrong credentials")
         if(await bcrypt.compare(req.body.password, req.user.password)){
             next()
         } else {
