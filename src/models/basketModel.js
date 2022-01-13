@@ -5,6 +5,10 @@ const BasketSchema = new mongoose.Schema({
         type: String,
         required: true,
     },
+    username: {
+        type: String, 
+        required: true
+    },
     basketContents: [{
         productId: {
             type: String,

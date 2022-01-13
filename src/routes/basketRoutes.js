@@ -9,7 +9,7 @@ const {getAllBaskets, addToBasket, removeFromBasket, getUserBasket} = require(".
 basketRouter.get("/", getAllBaskets)
 
 //GET USER BASKET
-basketRouter.post("/userBasket", getUserBasket)
+basketRouter.post("/userbasket", getUserBasket)
 
 
 //ADD TO BASKET

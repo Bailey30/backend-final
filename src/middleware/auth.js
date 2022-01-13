@@ -45,9 +45,12 @@ exports.decryptPassword = async (req,res, next) => {
 
 exports.verifyToken = async(req, res, next)=> {
     try {
+        // console.log(req.header);
         const token = req.header("Authorization").replace("Bearer ", "")
+        console.log(token);
     if(token) {
         const decodedToken = jwt.verify(token, process.env.JWT_SEC)
+        console.log(decodedToken);
         req.user = await User.findById(decodedToken.id)
         decodedToken && next()
     }
