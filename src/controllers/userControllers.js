@@ -54,18 +54,49 @@ exports.getUsers = async (req, res) => {
     }
 }
 
-exports.removeFavorite = async (req, res) => {
-    try {
-      const user = await User.findByIdAndUpdate({_id: req.body.userId},{
-           $pull: {
-               favorites: {
-                   productId: req.body.productId
-               }
-           }
-       }, {new: true})
-
-            res.status(200).send(user)
-    } catch (error) {
+exports.addFavorite = async(req, res) => {
+    try{
+        if(req.body.productId){
+        const user = await User.findOneAndUpdate({userId: req.body.userId}, {
+            $push: {
+                favorites: [{
+                productId: req.body.productId,
+                title: req.body.title,
+                desc: req.body.desc,
+                img: req.body.img,
+                categories: req.body.categories,
+                price: req.body.price
+        }]}
+        },
+        {new: true}
+        )
+        res.status(200).send(user)
+        console.log(`added a favorite`);
+    }else {
+        throw new Error();
+    }
+    }catch(error){
         console.log(error);
+        res.status(500).send("unable to add favorite")
     }
 }
+
+exports.removeFavorite = async (req, res) => {
+    try{
+        const user = await User.findByIdAndUpdate({_id: req.body.userId}, {
+            $pull: {
+                favorites: {
+                    productId: req.body.productId
+                }
+            }
+        }, {new: true})
+        
+        res.status(200).send(user)
+        console.log(`removed a favorite`);
+   
+    }catch(error){
+        console.log(error);
+        res.status(500).send("unable to remove favorite")
+    }
+}
+
